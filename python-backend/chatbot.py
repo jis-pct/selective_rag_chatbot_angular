@@ -1,15 +1,14 @@
 import httpx
 from openai import AzureOpenAI, BadRequestError
 import re
+import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv
 
-load_dotenv()
-
 app = Flask(__name__)
 CORS(app)
-messages = []
+load_dotenv()
 
 # Connect to client
 def get_client():
@@ -24,15 +23,11 @@ client = get_client()
 @app.route('/chat', methods=['POST'])
 def chat():
     data = request.json
-    message = data.get('message', "")
+    messages = data.get('messages', "")
     index_name = data.get('index_name', 'rag-storage')
     # search_params = data.get('search_params', {})
     # model_params = data.get('model_params', {})
 
-    messages.append({
-        "role": "user",
-        "content": message
-    })
     response = client.chat.completions.create(
         model="gpt-35-turbo-16k",
         messages=messages,
@@ -54,12 +49,8 @@ def chat():
             }]
         }
     )
-    messages.append({
-        "role": "assistant",
-        "content": response.choices[0].message.content
-    })
-
-    return jsonify(messages)
+    print(response)
+    return jsonify(response.choices[0].message.content)
 
 if __name__ == '__main__':
     app.run(debug=True)
