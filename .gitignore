@@ -1,0 +1,10 @@
+angular_frontend/chatbot.html
+angular_frontend/dist/
+angular_frontend/node_modules/
+python-backend/__pycache__/
+python-backend/.env
+angular_frontend/.vscode/tasks.json
+angular_frontend/.vscode/launch.json
+angular_frontend/.vscode/extensions.json
+angular_frontend/.editorconfig
+angular_frontend/.angular
