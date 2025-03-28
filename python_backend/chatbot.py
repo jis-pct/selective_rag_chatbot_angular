@@ -25,10 +25,13 @@ client = get_client()
 @app.route('/chat', methods=['POST'])
 def chat():
     data = request.json
-    messages = data.get('messages', "")
-    index_name = data.get('index_name', '')
-    # search_params = data.get('search_params', {})
-    # model_params = data.get('model_params', {})
+    messages = data["messages"]
+    m_params = data["parameters"]["modelParameters"]
+    s_params = data["parameters"]["searchParameters"]
+
+    # Add system message if present
+    if m_params["systemMessage"].strip() != "":
+        messages.insert(0, {"role": "system", "content": m_params["systemMessage"]})
 
     response = client.chat.completions.create(
         model=os.environ.get('AZURE_AI_CHAT_DEPLOYMENT'),
@@ -36,14 +39,23 @@ def chat():
                 {"role": m["role"], "content": m["content"]}
                 for m in messages
             ],
+        max_tokens=m_params["maxResponse"],
+        temperature=m_params["temperature"],
+        stop=None if m_params["stopPhrase"] == "" else [m_params["stopPhrase"]],
+        top_p=m_params["topP"],
+        frequency_penalty=m_params["frequencyPenalty"],
+        presence_penalty=m_params["presencePenalty"],
         extra_body={
             "data_sources": [{
                 "type": "azure_search",
                 "parameters": {
-                    "endpoint": "https://shannon-search-ai.search.windows.net",
-                    "index_name": index_name,
-                    "semantic_configuration": f"{index_name}-semantic-configuration",
+                    "endpoint": os.environ.get('AZURE_AI_SEARCH_ENDPOINT'),
+                    "index_name": s_params["indexName"],
+                    "semantic_configuration": f"{s_params["indexName"]}-semantic-configuration",
                     "query_type": "vector_semantic_hybrid",
+                    "in_scope": s_params["limitScope"],
+                    "strictness": s_params["strictness"],
+                    "top_n_documents": s_params["topNDocuments"],
                     "authentication": {
                         "type": "api_key",
                         "key": os.environ.get('AZURE_AI_SEARCH_API_KEY')
@@ -65,6 +77,33 @@ def chat():
     # Add citations and return response
     citation_list = [f"[{x['title']}]({x["url"]})" for x in response.choices[0].message.context['citations']]
     return jsonify({'role': 'assistant', 'content': response.choices[0].message.content, 'displayableContent': add_citations(response.choices[0].message.content, citation_list)})
+
+# Validate index name
+@app.route('/validate-index', methods=['POST'])
+def validate_index():
+    name = request.json['indexName']
+    try:
+        client.chat.completions.create(
+            model=os.environ.get('AZURE_AI_CHAT_DEPLOYMENT'),
+            messages=[{"role": "user", "content": "What is in your database?"}],
+            max_tokens=1,
+            extra_body={  
+                "data_sources": [{  
+                    "type": "azure_search",  
+                    "parameters": {  
+                        "endpoint": os.environ.get('AZURE_AI_SEARCH_ENDPOINT'),  
+                        "index_name": name,  
+                        "authentication": {  
+                            "type": "api_key",  
+                            "key": os.environ.get('AZURE_AI_SEARCH_API_KEY')
+                        }
+                    }  
+                }]
+            } 
+        )
+        return jsonify({'valid': True})
+    except BadRequestError as e:
+        return jsonify({'valid': False})
 
 # Add citations to the response
 def add_citations(content, citation_list):
