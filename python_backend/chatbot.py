@@ -1,5 +1,6 @@
 import httpx
 from openai import AzureOpenAI, BadRequestError
+from azure.storage.blob import BlobServiceClient
 import re
 import os
 from flask import Flask, request, jsonify
@@ -12,16 +13,21 @@ CORS(app)
 load_dotenv()
 
 # Connect to client
-def get_client():
+def get_openai_client():
     return AzureOpenAI(  
         azure_endpoint=os.environ.get('AZURE_AI_ENDPOINT'),  
         api_key=os.environ.get('AZURE_AI_API_KEY'),  
         api_version=os.environ.get('AZURE_AI_API_VERSION'),
         http_client = httpx.Client(verify=False)
     )
-client = get_client()
 
-# Receive chat messages and return response
+def get_blob_service_client():
+    return BlobServiceClient.from_connection_string(os.environ.get("AZURE_STORAGE_CONNECTION_STRING"))
+
+openai_client = get_openai_client()
+blob_service_client = get_blob_service_client()
+
+# Chat functions
 @app.route('/chat', methods=['POST'])
 def chat():
     data = request.json
@@ -33,7 +39,7 @@ def chat():
     if m_params["systemMessage"].strip() != "":
         messages.insert(0, {"role": "system", "content": m_params["systemMessage"]})
 
-    response = client.chat.completions.create(
+    response = openai_client.chat.completions.create(
         model=os.environ.get('AZURE_AI_CHAT_DEPLOYMENT'),
         messages=[
                 {"role": m["role"], "content": m["content"]}
@@ -78,12 +84,11 @@ def chat():
     citation_list = [f"[{x['title']}]({x["url"]})" for x in response.choices[0].message.context['citations']]
     return jsonify({'role': 'assistant', 'content': response.choices[0].message.content, 'displayableContent': add_citations(response.choices[0].message.content, citation_list)})
 
-# Validate index name
 @app.route('/validate-index', methods=['POST'])
 def validate_index():
     name = request.json['indexName']
     try:
-        client.chat.completions.create(
+        openai_client.chat.completions.create(
             model=os.environ.get('AZURE_AI_CHAT_DEPLOYMENT'),
             messages=[{"role": "user", "content": "What is in your database?"}],
             max_tokens=1,
@@ -105,13 +110,45 @@ def validate_index():
     except BadRequestError as e:
         return jsonify({'valid': False})
 
-# Add citations to the response
 def add_citations(content, citation_list):
     def citation_replacer(res, citation_list):
         return re.sub(r"\[doc\d+\]", lambda x: '[' + citation_list[int(x.group()[4:-1]) - 1] + ']', res)
     def duplicate_citation_remover(res):
         return re.sub(r"(\[\[.+\]\(.+\)\])\1+", r'\1', res)
     return duplicate_citation_remover(citation_replacer(content, citation_list))
+
+# Storage functions
+@app.route('/list-containers', methods=['GET'])
+def list_containers():
+    return [x['name'] for x in blob_service_client.list_containers()]
+
+@app.route('/<container>/list-files', methods=['GET'])
+def list_blobs(container):
+    container_client = blob_service_client.get_container_client(container)
+    blob_list = container_client.list_blobs()
+    return [blob.name for blob in blob_list]
+
+@app.route('/upload-file', methods=['POST'])
+def upload_blob():
+    container = request.form.get("container")
+    file = request.files.get('file')
+    try:
+        blob_client = blob_service_client.get_blob_client(container=container, blob=file.filename)
+        blob_client.upload_blob(file, overwrite=True)
+        return jsonify({'success': True })
+    except Exception as e:
+        return jsonify({'success': False })
+
+@app.route('/delete-file', methods=['POST'])
+def delete_blob():
+    container = request.json.get("container")
+    filename = request.json.get("filename")
+    try:
+        blob_client = blob_service_client.get_blob_client(container=container, blob=filename)
+        blob_client.delete_blob()
+        return jsonify({'success': True })
+    except Exception as e:
+        return jsonify({'success': False })
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,2 +1,34 @@
-<p>storage-manager works!</p>
-<p routerLink="/" routerLinkActive="active" ariaCurrentWhenActive="page">Back to chatbot</p>
+<div class="storage-manager">
+    <h1>Azure Blob Storage Manager</h1>
+  
+    <!-- Container Dropdown -->
+    <div>
+      <label for="container-select">Select a Container:</label>
+      <select
+        id="container-select"
+        [(ngModel)]="selectedContainer"
+        (change)="fetchFiles(selectedContainer!)"
+      >
+        <option *ngFor="let container of containers" [value]="container">
+          {{ container }}
+        </option>
+      </select>
+    </div>
+  
+    <!-- File List -->
+    <div *ngIf="selectedContainer">
+      <h2>Files in {{ selectedContainer }}</h2>
+      <ul>
+        <li *ngFor="let file of files">
+          {{ file }}
+          <button (click)="deleteFile(file)">Delete</button>
+        </li>
+      </ul>
+    </div>
+  
+    <!-- File Upload -->
+    <div *ngIf="selectedContainer">
+      <h3>Upload a file</h3>
+      <input type="file" (change)="uploadFile($event)" />
+    </div>
+  </div>
