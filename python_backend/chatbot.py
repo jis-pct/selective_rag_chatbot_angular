@@ -26,8 +26,8 @@ client = get_client()
 def chat():
     data = request.json
     messages = data["messages"]
-    m_params = data["parameters"]["modelParameters"]
-    s_params = data["parameters"]["searchParameters"]
+    m_params = data["parameters"]["model"]
+    s_params = data["parameters"]["search"]
 
     # Add system message if present
     if m_params["systemMessage"].strip() != "":

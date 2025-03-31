@@ -4,15 +4,8 @@
     <app-sidebar></app-sidebar>
   </div>
 
-
-  <!-- Chat Interface -->
+  <!-- Main Content -->
   <div style="width: 75%; padding: 10px;">
-    <h1>Selective RAG Chatbot</h1>
-    <div *ngFor="let message of messages" [style.background-color]="(message.role=='user') ? '#faf8f5' : '#f5ecdf'">
-      <div markdown>{{ message.displayableContent }}</div>
-    </div>
-    <div>
-      <input type="text" [(ngModel)] = "userMessage" placeholder="Type a message..." (keyup.enter)="sendMessage()" />
-    </div>
+    <router-outlet></router-outlet>
   </div>
 </div>

@@ -1,62 +1,15 @@
+<!-- Navigation -->
 <div>
-  <h3>Index Name</h3>
-  <input type="text" [(ngModel)]="searchParameters.indexName" (input)="onIndexNameChange()" />
-  <div *ngIf="!isIndexNameValid" style="color: red;">Index doesn't exist!</div>
+  <button routerLink="/">Chat Interface</button>
+  <button routerLink="/storage-manager">Storage Manager</button>
 </div>
 
-<div>
-  <h3>Model Parameters</h3>
-  <label for="system-message">System Message:</label>
-  <textarea id="system-message" type="text" cols="50" rows="5" [(ngModel)]="modelParameters.systemMessage"></textarea><br>
-  
-  <label for="past-messages">Past messages to include:</label>
-  <mat-slider id="past-messages" min="1" max="20" step="1">
-    <input matSliderThumb value="10" [(ngModel)]="modelParameters.pastMessagesIncluded">
-  </mat-slider><br>
-  
-  <label for="max-response">Maximum response tokens:</label>
-  <mat-slider id="max-response" min="1" max="16000" step="1">
-    <input matSliderThumb value="800" [(ngModel)]="modelParameters.maxResponse">
-  </mat-slider><br>
-
-  <label for="temperature">Temperature:</label>
-  <mat-slider id="temperature" min="0.0" max="2.0" step="0.1">
-    <input matSliderThumb value="1.0" [(ngModel)]="modelParameters.temperature">
-  </mat-slider><br>
-
-  <label for="top-p">Top P:</label>
-  <mat-slider id="top-p" min="0.0" max="1.0" step="0.1">
-    <input matSliderThumb value="0.95" [(ngModel)]="modelParameters.topP">
-  </mat-slider><br>
-
-  <label for="stop-phrase">Stop phrase:</label>
-  <input type="text" [(ngModel)]="modelParameters.stopPhrase" /><br>
-
-  <label for="frequency-penalty">Frequency Penalty</label>
-  <mat-slider id="frequency-penalty" min="-2.0" max="2.0" step="0.1">
-    <input matSliderThumb value="0.0" [(ngModel)]="modelParameters.frequencyPenalty">
-  </mat-slider><br>
-
-  <label for="presence-penalty">Presence Penalty:</label>
-  <mat-slider id="presence-penalty" min="-2.0" max="2.0" step="0.1">
-    <input matSliderThumb value="0.0" [(ngModel)]="modelParameters.presencePenalty">
-  </mat-slider>
+<!-- Chat interface sidebar -->
+<div *ngIf="currentRoute === '/'">
+  <app-chat-sidebar></app-chat-sidebar>
 </div>
 
-<div>
-  <h3>Search Parameters</h3>
-  <label for="scope">Limit responses to data content:</label>
-  <mat-checkbox id="scope" [(ngModel)]="searchParameters.limitScope"/><br>
-  
-  <label for="past-messages">Strictness:</label>
-  <mat-slider min="1" max="5" step="1">
-    <input matSliderThumb value="3" [(ngModel)]="searchParameters.strictness">
-  </mat-slider><br>
-  
-  <label for="past-messages">Number of retrieved documents:</label>
-  <mat-slider min="3" max="20" step="1">
-    <input matSliderThumb value="5" [(ngModel)]="searchParameters.topNDocuments">
-  </mat-slider>
+<!-- Storage manager sidebar -->
+<div *ngIf="currentRoute === '/storage-manager'">
+  <app-storage-sidebar></app-storage-sidebar>
 </div>
-
-<button (click)="showParams()">Show in console</button>
