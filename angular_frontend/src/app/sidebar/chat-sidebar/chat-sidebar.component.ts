@@ -69,10 +69,6 @@ export class ChatSidebarComponent implements OnInit, OnDestroy {
     this.sharedService.updateChatParameters(this.chatParameters);
   }
 
-  public showParams() {
-    console.log(this.chatParameters);
-  }
-
   ngOnDestroy(){
     this.indexNameSubject.unsubscribe();
   }
