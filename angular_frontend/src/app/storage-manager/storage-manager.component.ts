@@ -24,23 +24,28 @@ export class StorageManagerComponent implements OnInit {
   }
 
   fetchContainers() {
+    this.isLoading = true;
     this.http.get<string[]>('http://127.0.0.1:5000/list-containers').subscribe(
       (response) => {
         this.containers = response;
+        this.isLoading = false;
       });
   }
 
   fetchFiles(containerName: string) {
+    this.isLoading = true;
     if (!this.selectedContainer) return;
     this.http.get<string[]>(`http://127.0.0.1:5000/${this.selectedContainer}/list-files`).subscribe(
       (response) => {
         this.files = response;
+        this.isLoading = false;
       });
   }
 
   // Delete a file from the selected container
   deleteFile(filename: string) {
     if (!this.selectedContainer) return;
+    this.isLoading = true;
     this.http
       .post<{ success: boolean }>(`http://127.0.0.1:5000/delete-file`, {
         container: this.selectedContainer,
@@ -51,6 +56,7 @@ export class StorageManagerComponent implements OnInit {
           } else {
             console.log(`Error deleting ${filename}.`);
           }
+          this.isLoading = false;
           this.fetchFiles(this.selectedContainer);
         });
   }
@@ -58,7 +64,8 @@ export class StorageManagerComponent implements OnInit {
   // Upload a file to the selected container
   uploadFile(event: Event) {
     if (!this.selectedContainer) return;
-
+    
+    this.isLoading = true;
     const input = event.target as HTMLInputElement;
     const file = input.files ? input.files[0] : null;
 
@@ -75,6 +82,7 @@ export class StorageManagerComponent implements OnInit {
               console.log(`File ${file.name} uploaded successfully.`);
             } else { console.log(`Error uploading ${file.name}.`);
             }
+            this.isLoading = false;
             this.fetchFiles(this.selectedContainer);
           }
         )
