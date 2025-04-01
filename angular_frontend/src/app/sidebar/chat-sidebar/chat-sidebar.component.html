@@ -6,7 +6,7 @@
 
 <div>
 <!-- MODEL PARAMETERS -->
-<br><h3>Model Parameters</h3>
+<h3>Model Parameters</h3>
 <label for="system-message">System message:</label>
 <textarea id="system-message" type="text" style="width:90%" rows="4" [(ngModel)]="chatParameters.model.systemMessage"></textarea><br>
 
@@ -50,3 +50,5 @@
 <input type="range" min="3" max="20" step="1" [(ngModel)]="chatParameters.search.topNDocuments">
 <span>{{ chatParameters.search.topNDocuments }}</span><br>
 </div>
+
+<button (click)="resetToDefault()">Reset</button>

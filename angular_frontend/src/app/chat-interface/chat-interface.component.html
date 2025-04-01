@@ -6,4 +6,5 @@
 </div>
 <div>
     <input type="text" [(ngModel)] = "userMessage" placeholder="Type a message..." (keyup.enter)="sendMessage()" />
+    <button style="margin-left: 10px;" (click)="clearChat()">Clear chat</button>
 </div>

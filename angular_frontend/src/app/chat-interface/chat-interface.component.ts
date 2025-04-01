@@ -32,9 +32,10 @@ export class ChatInterfaceComponent implements OnInit, OnDestroy, AfterViewCheck
     constructor(private http: HttpClient, private sharedService: SharedService) {}
 
     ngOnInit() { // Subscribe to parameter changes in sidebar
-      this.paramSubscription = this.sharedService.chatParameters.subscribe((parameters) => {
-        this.chatParameters = parameters;
-      });
+      this.chatParameters = this.sharedService.retrieveChatParameters();
+      // this.paramSubscription = this.sharedService.currentChatParameters.subscribe((parameters) => {
+      //   this.chatParameters = parameters;
+      // });
     }
 
     sendMessage() {
@@ -64,7 +65,11 @@ export class ChatInterfaceComponent implements OnInit, OnDestroy, AfterViewCheck
     private scrollToBottom() {
       this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
     }
-  
+    
+    clearChat() {
+      this.messages =[];
+    }
+
     ngOnDestroy() {
       this.paramSubscription.unsubscribe();
     }

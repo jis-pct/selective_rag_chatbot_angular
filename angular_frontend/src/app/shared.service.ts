@@ -5,7 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class SharedService {
-  public chatParameters = new BehaviorSubject<any>({
+  defaultChatParameters = {
     model:{
       systemMessage: "You are an AI assistant that helps users find information. \
   Please answer using retrieved documents only \
@@ -26,13 +26,16 @@ export class SharedService {
       strictness: 3,
       topNDocuments: 5
     }
-  });
+  }
+  
+  currentChatParameters = JSON.parse(JSON.stringify(this.defaultChatParameters));
 
-  updateChatParameters(parameters: any) {
-    this.chatParameters.next(parameters);
+  retrieveChatParameters() {
+    return this.currentChatParameters
   }
 
-  retrieveChatParameters(): Observable<any> {
-    return this.chatParameters.asObservable();
+  resetChatParameters() {
+    this.currentChatParameters = JSON.parse(JSON.stringify(this.defaultChatParameters));
+    return this.currentChatParameters;
   }
 }

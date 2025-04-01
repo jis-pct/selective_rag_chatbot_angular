@@ -38,10 +38,8 @@ export class ChatSidebarComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
      // Get default params
-    this.sharedService.retrieveChatParameters().subscribe((params) => {
-      this.chatParameters = params;
-    });
-    
+    this.chatParameters = this.sharedService.retrieveChatParameters()
+
     // Subscribe to the Subject and debounce the validation requests
     this.indexNameSubject
       .pipe(
@@ -62,8 +60,8 @@ export class ChatSidebarComponent implements OnInit, OnDestroy {
     this.indexNameSubject.next(this.chatParameters.search.indexName);
   }
 
-  public pushUpdatesToSharedService() {
-    this.sharedService.updateChatParameters(this.chatParameters);
+  resetToDefault() {
+    this.chatParameters = this.sharedService.resetChatParameters();
   }
 
   ngOnDestroy(){
