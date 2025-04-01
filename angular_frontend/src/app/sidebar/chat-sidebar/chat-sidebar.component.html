@@ -1,60 +1,52 @@
-<div>
 <h3>Index Name</h3>
-<input type="text" [(ngModel)]="chatParameters.search.indexName" (input)="onIndexNameChange()" />
-<div *ngIf="!isIndexNameValid" style="color: red;">Index doesn't exist!</div>
+<div style="display: flex;">
+    <input type="text" [(ngModel)]="chatParameters.search.indexName" (input)="onIndexNameChange()" />
+    <div *ngIf="!isIndexNameValid" style="color: red; margin-left: 10px;">Index doesn't exist!</div>
 </div>
 
 <div>
-<h3>Model Parameters</h3>
-<label for="system-message">System Message:</label>
+<!-- MODEL PARAMETERS -->
+<br><h3>Model Parameters</h3>
+<label for="system-message">System message:</label>
 <textarea id="system-message" type="text" style="width:90%" rows="4" [(ngModel)]="chatParameters.model.systemMessage"></textarea><br>
 
 <label for="past-messages">Past messages to include:</label>
-<mat-slider id="past-messages" min="1" max="20" step="1">
-    <input matSliderThumb value="10" [(ngModel)]="chatParameters.model.pastMessagesIncluded">
-</mat-slider><br>
+<input type="range" id="past-messages" min="1" max="20" step="1" [(ngModel)]="chatParameters.model.pastMessagesIncluded">
+<span>{{ chatParameters.model.pastMessagesIncluded }}</span><br>
 
 <label for="max-response">Maximum response tokens:</label>
-<mat-slider id="max-response" min="1" max="16000" step="1">
-    <input matSliderThumb value="800" [(ngModel)]="chatParameters.model.maxResponse">
-</mat-slider><br>
+<input type="range" id="max-response" min="1" max="16000" step="1" [(ngModel)]="chatParameters.model.maxResponse">
+<span>{{ chatParameters.model.maxResponse }}</span><br>
 
 <label for="temperature">Temperature:</label>
-<mat-slider id="temperature" min="0.0" max="2.0" step="0.1">
-    <input matSliderThumb value="1.0" [(ngModel)]="chatParameters.model.temperature">
-</mat-slider><br>
+<input type="range" id="temperature" min="0.0" max="2.0" step="0.1" [(ngModel)]="chatParameters.model.temperature">
+<span>{{ chatParameters.model.maxResponse }}</span><br>
 
 <label for="top-p">Top P:</label>
-<mat-slider id="top-p" min="0.0" max="1.0" step="0.1">
-    <input matSliderThumb value="0.95" [(ngModel)]="chatParameters.model.topP">
-</mat-slider><br>
+<input type="range" id="top-p" min="0.0" max="1.0" step="0.1" [(ngModel)]="chatParameters.model.topP">
+<span>{{ chatParameters.model.topP }}</span><br>
 
 <label for="stop-phrase">Stop phrase:</label>
-<input type="text" [(ngModel)]="chatParameters.model.stopPhrase" /><br>
+<input type="text" id="stop-phrase" [(ngModel)]="chatParameters.model.stopPhrase" /><br>
 
 <label for="frequency-penalty">Frequency Penalty</label>
-<mat-slider id="frequency-penalty" min="-2.0" max="2.0" step="0.1">
-    <input matSliderThumb value="0.0" [(ngModel)]="chatParameters.model.frequencyPenalty">
-</mat-slider><br>
+<input type="range" id="frequency-penalty" min="-2.0" max="2.0" step="0.1" [(ngModel)]="chatParameters.model.frequencyPenalty">
+<span>{{ chatParameters.model.frequencyPenalty }}</span><br>
 
 <label for="presence-penalty">Presence Penalty:</label>
-<mat-slider id="presence-penalty" min="-2.0" max="2.0" step="0.1">
-    <input matSliderThumb value="0.0" [(ngModel)]="chatParameters.model.presencePenalty">
-</mat-slider>
-</div>
+<input type="range" id="presence-penalty" min="-2.0" max="2.0" step="0.1" [(ngModel)]="chatParameters.model.presencePenalty">
+<span>{{ chatParameters.model.presencePenalty }}</span><br>
 
-<div>
-<h3>Search Parameters</h3>
+<!-- SEARCH PARAMETERS -->
+<br><h3>Search Parameters</h3>
 <label for="scope">Limit responses to data content:</label>
-<mat-checkbox id="scope" [(ngModel)]="chatParameters.search.limitScope"/><br>
+<input type="checkbox" id="scope" [(ngModel)]="chatParameters.search.limitScope"/><br>
 
 <label for="past-messages">Strictness:</label>
-<mat-slider min="1" max="5" step="1">
-    <input matSliderThumb value="3" [(ngModel)]="chatParameters.search.strictness">
-</mat-slider><br>
+<input type="range" min="1" max="5" step="1" [(ngModel)]="chatParameters.search.strictness">
+<span>{{ chatParameters.search.strictness }}</span><br>
 
 <label for="past-messages">Number of retrieved documents:</label>
-<mat-slider min="3" max="20" step="1">
-    <input matSliderThumb value="5" [(ngModel)]="chatParameters.search.topNDocuments">
-</mat-slider>
+<input type="range" min="3" max="20" step="1" [(ngModel)]="chatParameters.search.topNDocuments">
+<span>{{ chatParameters.search.topNDocuments }}</span><br>
 </div>

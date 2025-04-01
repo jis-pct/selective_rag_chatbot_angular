@@ -1,0 +1,5 @@
+/* Apply vertical padding to all elements except <h3> */
+div > *:not(h3) {
+    margin-top: 10px; /* Add vertical spacing above each element */
+    margin-bottom: 10px; /* Add vertical spacing below each element */
+  }

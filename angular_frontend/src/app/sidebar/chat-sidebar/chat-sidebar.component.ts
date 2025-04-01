@@ -2,15 +2,14 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { MatSliderModule } from '@angular/material/slider';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { Subject, Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';
 import { SharedService } from '../../shared.service';
 
 @Component({
   selector: 'app-chat-sidebar',
-  imports: [FormsModule, MatSliderModule, MatCheckboxModule, CommonModule],
+  imports: [FormsModule, MatCheckboxModule, CommonModule],
   templateUrl: './chat-sidebar.component.html',
   styleUrl: './chat-sidebar.component.css'
 })
