@@ -25,7 +25,7 @@ export class ChatInterfaceComponent implements OnInit, OnDestroy, AfterViewCheck
     userMessage = "";
     messages: Message[] = []; // Store all message history
     isWaitingForResponse = false; // Keep track of whether assistant is thinking
-    chatParameters = null;
+    chatParameters!: {model: any, search: any};
 
     @ViewChild('chatContainer') private chatContainer!: ElementRef;
 
@@ -38,8 +38,8 @@ export class ChatInterfaceComponent implements OnInit, OnDestroy, AfterViewCheck
     }
 
     sendMessage() {
-      if (this.userMessage.trim() == '' || this.isWaitingForResponse) {
-        return; // Prevent sending empty messages or before assistant responds to last message
+      if (this.userMessage.trim() == '' || this.isWaitingForResponse || !this.chatParameters || !this.chatParameters.search.indexNameValid) {
+        return; // Prevent sending messages on certain conditions
       }
       const userMessage = this.userMessage
       this.userMessage = '';

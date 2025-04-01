@@ -21,6 +21,7 @@ export class SharedService {
     },
     search: {
       indexName: 'rag-storage',
+      indexNameValid: true,
       limitScope: true,
       strictness: 3,
       topNDocuments: 5

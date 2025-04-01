@@ -1,7 +1,7 @@
 <h3>Index Name</h3>
 <div style="display: flex;">
     <input type="text" [(ngModel)]="chatParameters.search.indexName" (input)="onIndexNameChange()" />
-    <div *ngIf="!isIndexNameValid" style="color: red; margin-left: 10px;">Index doesn't exist!</div>
+    <div *ngIf="!chatParameters.search.indexNameValid" style="color: red; margin-left: 10px;">Index doesn't exist!</div>
 </div>
 
 <div>

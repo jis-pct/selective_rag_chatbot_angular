@@ -2,20 +2,18 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { Subject } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';
 import { SharedService } from '../../shared.service';
 
 @Component({
   selector: 'app-chat-sidebar',
-  imports: [FormsModule, MatCheckboxModule, CommonModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './chat-sidebar.component.html',
   styleUrl: './chat-sidebar.component.css'
 })
 export class ChatSidebarComponent implements OnInit, OnDestroy {
   public indexNameSubject = new Subject<string>();
-  public isIndexNameValid = true;
   public chatParameters = {
     model: {
       systemMessage: '',
@@ -29,6 +27,7 @@ export class ChatSidebarComponent implements OnInit, OnDestroy {
     },
     search: {
       indexName: '',
+      indexNameValid: false,
       limitScope: false,
       strictness: 0,
       topNDocuments: 0,
@@ -46,11 +45,11 @@ export class ChatSidebarComponent implements OnInit, OnDestroy {
     // Subscribe to the Subject and debounce the validation requests
     this.indexNameSubject
       .pipe(
-        debounceTime(100), // Wait till user stops typing
+        debounceTime(50), // Wait till user stops typing
         switchMap((indexName) => this.validateIndexName(indexName))
       )
       .subscribe((isValid) => {
-        this.isIndexNameValid = isValid.valid;
+        this.chatParameters.search.indexNameValid = isValid.valid;
       });
   }
 
