@@ -3,6 +3,10 @@
     <div *ngFor="let message of messages" [style.background-color]="(message.role=='user') ? '#faf8f5' : '#f5ecdf'">
         <div markdown>{{ message.displayableContent }}</div>
     </div>
+
+    <div *ngIf="isWaitingForResponse">
+        <em style="color:grey; ">Responding...</em>
+    </div>
 </div>
 <div>
     <input type="text" [(ngModel)] = "userMessage" placeholder="Type a message..." (keyup.enter)="sendMessage()" />

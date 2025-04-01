@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy, AfterViewChecked, ElementRef, ViewChild  } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { NgFor } from '@angular/common';
@@ -14,7 +15,7 @@ export interface Message {
 
 @Component({
     selector: 'app-chat-interface',
-    imports: [FormsModule, NgFor, MarkdownModule],
+    imports: [FormsModule, NgFor, MarkdownModule, CommonModule],
     templateUrl: './chat-interface.component.html',
     styleUrl: './chat-interface.component.css',
     standalone: true
