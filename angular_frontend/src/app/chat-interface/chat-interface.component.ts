@@ -27,6 +27,7 @@ export class ChatInterfaceComponent implements OnInit, OnDestroy, AfterViewCheck
     messages: Message[] = []; // Store all message history
     isWaitingForResponse = false; // Keep track of whether assistant is thinking
     chatParameters!: {model: any, search: any};
+    errorMessage = '';
 
     @ViewChild('chatContainer') private chatContainer!: ElementRef;
 
@@ -37,7 +38,7 @@ export class ChatInterfaceComponent implements OnInit, OnDestroy, AfterViewCheck
     }
 
     sendMessage() {
-      if (this.userMessage.trim() == '' || this.isWaitingForResponse || !this.chatParameters || !this.chatParameters.search.indexNameValid) {
+      if (this.userMessage.trim() == '' || this.isWaitingForResponse || !this.chatParameters || !this.chatParameters.search.indexNameValid || this.errorMessage) {
         return; // Prevent sending messages on certain conditions
       }
       const userMessage = this.userMessage
@@ -45,14 +46,21 @@ export class ChatInterfaceComponent implements OnInit, OnDestroy, AfterViewCheck
       this.messages.push({role: 'user', content: userMessage, displayableContent: userMessage});
       this.isWaitingForResponse = true;
 
-      // Send message to backend and wait for response
-      return this.http
-      .post<Message>(this.apiUrl, { 
-        messages: this.messages, 
+      this.http
+      .post<Message>(this.apiUrl, {
+        messages: this.messages,
         parameters: this.chatParameters
-      }).subscribe((response) => {
-        this.messages.push(response);
-        this.isWaitingForResponse = false;
+      })
+      .subscribe({
+        next: (res) => {
+          this.messages.push(res);
+          this.isWaitingForResponse = false;
+        },
+        error: (err) => {
+          console.error('Error sending message:', err);
+          this.isWaitingForResponse = false;
+          this.errorMessage = 'An error occurred while sending your message. Please try again.';
+        }
       });
     }
     
@@ -66,6 +74,7 @@ export class ChatInterfaceComponent implements OnInit, OnDestroy, AfterViewCheck
     
     clearChat() {
       this.messages =[];
+      this.errorMessage = '';
     }
 
     ngOnDestroy() {

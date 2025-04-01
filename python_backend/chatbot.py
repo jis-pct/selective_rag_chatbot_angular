@@ -39,46 +39,51 @@ def chat():
     if m_params["systemMessage"].strip() != "":
         messages.insert(0, {"role": "system", "content": m_params["systemMessage"]})
 
-    response = openai_client.chat.completions.create(
-        model=os.environ.get('AZURE_AI_CHAT_DEPLOYMENT'),
-        messages=[
-                {"role": m["role"], "content": m["content"]}
-                for m in messages
-            ],
-        max_tokens=m_params["maxResponse"],
-        temperature=m_params["temperature"],
-        stop=None if m_params["stopPhrase"] == "" else [m_params["stopPhrase"]],
-        top_p=m_params["topP"],
-        frequency_penalty=m_params["frequencyPenalty"],
-        presence_penalty=m_params["presencePenalty"],
-        extra_body={
-            "data_sources": [{
-                "type": "azure_search",
-                "parameters": {
-                    "endpoint": os.environ.get('AZURE_AI_SEARCH_ENDPOINT'),
-                    "index_name": s_params["indexName"],
-                    "semantic_configuration": f"{s_params["indexName"]}-semantic-configuration",
-                    "query_type": "vector_semantic_hybrid",
-                    "in_scope": s_params["limitScope"],
-                    "strictness": s_params["strictness"],
-                    "top_n_documents": s_params["topNDocuments"],
-                    "authentication": {
-                        "type": "api_key",
-                        "key": os.environ.get('AZURE_AI_SEARCH_API_KEY')
-                    },
-                    "fields_mapping": {
-                            "content_fields_separator": "\\n",
-                            "title_field": "title",
-                            "url_field": "url"
+    try:
+        response = openai_client.chat.completions.create(
+            model=os.environ.get('AZURE_AI_CHAT_DEPLOYMENT'),
+            messages=[
+                    {"role": m["role"], "content": m["content"]}
+                    for m in messages
+                ],
+            max_tokens=m_params["maxResponse"],
+            temperature=m_params["temperature"],
+            stop=None if m_params["stopPhrase"] == "" else [m_params["stopPhrase"]],
+            top_p=m_params["topP"],
+            frequency_penalty=m_params["frequencyPenalty"],
+            presence_penalty=m_params["presencePenalty"],
+            extra_body={
+                "data_sources": [{
+                    "type": "azure_search",
+                    "parameters": {
+                        "endpoint": os.environ.get('AZURE_AI_SEARCH_ENDPOINT'),
+                        "index_name": s_params["indexName"],
+                        "semantic_configuration": f"{s_params["indexName"]}-semantic-configuration",
+                        "query_type": "vector_semantic_hybrid",
+                        "in_scope": s_params["limitScope"],
+                        "strictness": s_params["strictness"],
+                        "top_n_documents": s_params["topNDocuments"],
+                        "authentication": {
+                            "type": "api_key",
+                            "key": os.environ.get('AZURE_AI_SEARCH_API_KEY')
                         },
-                    "embedding_dependency": {
-                        "type": "deployment_name",
-                        "deployment_name": os.environ.get('AZURE_AI_EMBEDDING_NAME')
+                        "fields_mapping": {
+                                "content_fields_separator": "\\n",
+                                "title_field": "title",
+                                "url_field": "url"
+                            },
+                        "embedding_dependency": {
+                            "type": "deployment_name",
+                            "deployment_name": os.environ.get('AZURE_AI_EMBEDDING_NAME')
+                        }
                     }
-                }
-            }]
-        }
-    )
+                }]
+            }
+        )
+    
+    except Exception as e:
+        print(f"Unexpected error: {str(e)}")  # Log the error for debugging
+        return jsonify({'error': 'An unexpected error occurred. Please try again later.'}), 500
     
     # Add citations and return response
     citation_list = [f"[{x['title']}]({x["url"]})" for x in response.choices[0].message.context['citations']]

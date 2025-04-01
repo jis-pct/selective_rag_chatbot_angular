@@ -4,8 +4,14 @@
         <div markdown>{{ message.displayableContent }}</div>
     </div>
 
+    <!-- Waiting indicator -->
     <div *ngIf="isWaitingForResponse">
         <em style="color:grey; ">Responding...</em>
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
     </div>
 </div>
 <div>
