@@ -1,6 +1,8 @@
 <h1>Selective RAG Chatbot</h1>
-<div *ngFor="let message of messages" [style.background-color]="(message.role=='user') ? '#faf8f5' : '#f5ecdf'">
-    <div markdown>{{ message.displayableContent }}</div>
+<div #chatContainer class="chat-container">
+    <div *ngFor="let message of messages" [style.background-color]="(message.role=='user') ? '#faf8f5' : '#f5ecdf'">
+        <div markdown>{{ message.displayableContent }}</div>
+    </div>
 </div>
 <div>
     <input type="text" [(ngModel)] = "userMessage" placeholder="Type a message..." (keyup.enter)="sendMessage()" />

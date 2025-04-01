@@ -35,7 +35,6 @@ export class ChatSidebarComponent implements OnInit, OnDestroy {
       topNDocuments: 0,
     },
   };
-  private paramSubscription!: Subscription;
 
   constructor(private http: HttpClient, private sharedService: SharedService) {}
 

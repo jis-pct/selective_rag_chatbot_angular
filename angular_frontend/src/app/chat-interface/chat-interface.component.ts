@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewChecked, ElementRef, ViewChild  } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { NgFor } from '@angular/common';
@@ -19,13 +19,15 @@ export interface Message {
     styleUrl: './chat-interface.component.css',
     standalone: true
 })
-export class ChatInterfaceComponent implements OnInit, OnDestroy {
+export class ChatInterfaceComponent implements OnInit, OnDestroy, AfterViewChecked {
     private apiUrl = 'http://127.0.0.1:5000/chat';
     private paramSubscription = new Subscription();
     userMessage = "";
     messages: Message[] = []; // Store all message history
     isWaitingForResponse = false; // Keep track of whether assistant is thinking
     chatParameters = null;
+
+    @ViewChild('chatContainer') private chatContainer!: ElementRef;
 
     constructor(private http: HttpClient, private sharedService: SharedService) {}
 
@@ -54,7 +56,15 @@ export class ChatInterfaceComponent implements OnInit, OnDestroy {
         this.isWaitingForResponse = false;
       });
     }
-
+    
+    ngAfterViewChecked() {
+      this.scrollToBottom();
+    }
+    
+    private scrollToBottom() {
+      this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
+    }
+  
     ngOnDestroy() {
       this.paramSubscription.unsubscribe();
     }

@@ -1,15 +1,17 @@
-<!-- Navigation -->
-<div>
-  <button routerLink="/">Chat Interface</button>
-  <button routerLink="/storage-manager">Storage Manager</button>
-</div>
+<div style="height: calc(100vh - 50px); overflow-y: auto; padding: 10px;">
+  <!-- Navigation -->
+  <div>
+    <button routerLink="/">Chat Interface</button>
+    <button routerLink="/storage-manager">Storage Manager</button>
+  </div>
 
-<!-- Chat interface sidebar -->
-<div *ngIf="currentRoute === '/'">
-  <app-chat-sidebar></app-chat-sidebar>
-</div>
+  <!-- Chat interface sidebar -->
+  <div *ngIf="currentRoute === '/'">
+    <app-chat-sidebar></app-chat-sidebar>
+  </div>
 
-<!-- Storage manager sidebar -->
-<div *ngIf="currentRoute === '/storage-manager'">
-  <app-storage-sidebar></app-storage-sidebar>
+  <!-- Storage manager sidebar -->
+  <div *ngIf="currentRoute === '/storage-manager'">
+    <app-storage-sidebar></app-storage-sidebar>
+  </div>
 </div>
