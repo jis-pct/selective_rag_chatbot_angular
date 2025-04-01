@@ -35,7 +35,7 @@ export class SharedService {
   }
 
   resetChatParameters() {
-    this.currentChatParameters = JSON.parse(JSON.stringify(this.defaultChatParameters));
-    return this.currentChatParameters;
+    Object.assign(this.currentChatParameters, this.defaultChatParameters);
   }
+  
 }

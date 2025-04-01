@@ -61,7 +61,7 @@ export class ChatSidebarComponent implements OnInit, OnDestroy {
   }
 
   resetToDefault() {
-    this.chatParameters = this.sharedService.resetChatParameters();
+    this.sharedService.resetChatParameters();
   }
 
   ngOnDestroy(){

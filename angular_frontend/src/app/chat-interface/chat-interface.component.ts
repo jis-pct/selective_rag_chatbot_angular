@@ -31,11 +31,8 @@ export class ChatInterfaceComponent implements OnInit, OnDestroy, AfterViewCheck
 
     constructor(private http: HttpClient, private sharedService: SharedService) {}
 
-    ngOnInit() { // Subscribe to parameter changes in sidebar
+    ngOnInit() {
       this.chatParameters = this.sharedService.retrieveChatParameters();
-      // this.paramSubscription = this.sharedService.currentChatParameters.subscribe((parameters) => {
-      //   this.chatParameters = parameters;
-      // });
     }
 
     sendMessage() {
