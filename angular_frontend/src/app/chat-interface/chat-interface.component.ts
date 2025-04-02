@@ -46,19 +46,18 @@ export class ChatInterfaceComponent implements AfterViewChecked {
       this.isWaitingForResponse = true;
 
       this.http
-      .post<Message>(this.apiUrl, {
+      .post<Message | { error: string; details: string }>(this.apiUrl, {
         messages: this.messages,
         parameters: this.chatParameters
       })
       .subscribe({
         next: (res) => {
-          this.messages.push(res);
+          if ('error' in res) {
+            this.errorMessage = res.error + (res.details ? `: ${res.details}` : '');
+          } else {
+            this.messages.push(res as Message);
+          }
           this.isWaitingForResponse = false;
-        },
-        error: (err) => {
-          console.error('Error sending message:', err);
-          this.isWaitingForResponse = false;
-          this.errorMessage = 'An error occurred while sending your message. Please try again.';
         }
       });
     }

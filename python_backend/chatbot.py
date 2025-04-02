@@ -81,9 +81,10 @@ def chat():
             }
         )
     
+    except BadRequestError as e:
+        return jsonify({'error': 'Bad request error occurred.', 'details': str(e)})
     except Exception as e:
-        print(f"Unexpected error: {str(e)}")  # Log the error for debugging
-        return jsonify({'error': 'An unexpected error occurred. Please try again later.'}), 500
+        return jsonify({'error': 'An unexpected error occurred.', 'details': str(e)})
     
     # Add citations and return response
     citation_list = [f"[{x['title']}]({x["url"]})" for x in response.choices[0].message.context['citations']]
