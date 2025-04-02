@@ -3,4 +3,10 @@ html, body {
     height: 100%;
     overflow: hidden; /* Prevent unnecessary scrolling */
     font-family: Arial, sans-serif;
-  }
+    box-sizing: border-box;
+    background-color: #f5f5f5; /* Set your desired app background color */
+    margin: 0;
+    padding: 0;
+    letter-spacing: 0.25px;
+    word-spacing: 1.1px;
+}
