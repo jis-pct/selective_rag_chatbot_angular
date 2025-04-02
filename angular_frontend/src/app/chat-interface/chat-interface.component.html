@@ -1,20 +1,33 @@
-<h1>Selective RAG Chatbot</h1>
-<div #chatContainer class="chat-container">
-    <div *ngFor="let message of messages" [style.background-color]="(message.role=='user') ? '#faf8f5' : '#f5ecdf'">
-        <div markdown>{{ message.displayableContent }}</div>
+<div class="chat-interface">
+    <h1 class="title">Selective RAG Chatbot</h1>
+    
+    <!-- Chat Messages -->
+    <div #chatContainer class="chat-container">
+        <div *ngFor="let message of messages" [style.background-color]="(message.role=='user') ? '#faf8f5' : '#f5ecdf'">
+            <div markdown>{{ message.displayableContent }}</div>
+        </div>
+
+        <!-- Waiting Indicator -->
+        <div *ngIf="isWaitingForResponse">
+            <em style="color:grey;">Responding...</em>
+        </div>
+
+        <!-- Error Message -->
+        <div *ngIf="errorMessage" class="error-message">
+            {{ errorMessage }}
+        </div>
     </div>
 
-    <!-- Waiting indicator -->
-    <div *ngIf="isWaitingForResponse">
-        <em style="color:grey; ">Responding...</em>
+    <!-- Input Box -->
+    <div class="input-container">
+        <textarea
+            [(ngModel)]="userMessage"
+            placeholder="Type a message..."
+            rows="1"
+            (keydown)="handleKeyDown($event)"
+            (keyup)="adjustTextareaHeight($event)"
+        ></textarea>
+        <button (click)="sendMessage()">Submit</button>
+        <button (click)="clearChat()">Clear</button>
     </div>
-
-    <!-- Error Message -->
-    <div *ngIf="errorMessage" class="error-message">
-        {{ errorMessage }}
-    </div>
-</div>
-<div>
-    <input type="text" [(ngModel)] = "userMessage" placeholder="Type a message..." (keyup.enter)="sendMessage()" />
-    <button style="margin-left: 10px;" (click)="clearChat()">Clear chat</button>
 </div>

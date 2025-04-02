@@ -37,10 +37,24 @@ export class ChatInterfaceComponent implements AfterViewChecked, OnInit, OnDestr
         this.chatParameters = params;
       });
     }
+    
+    handleKeyDown(event: KeyboardEvent): void {
+      if (event.key === 'Enter' && !event.shiftKey) {
+        if (this.userMessage.trim() === '') {
+          // Prevent default behavior (adding a newline) if the message is empty
+          event.preventDefault();
+        } else {
+          // Prevent default behavior and send the message
+          event.preventDefault();
+          this.sendMessage();
+        }
+      }
+    }
 
     sendMessage() {
-      if (this.userMessage.trim() == '' || this.isWaitingForResponse || !this.chatParameters || !this.chatParameters.search.indexNameValid || this.errorMessage) {
-        return; // Prevent sending messages on certain conditions
+      // Prevent sending messages on certain conditions
+      if (this.isWaitingForResponse || !this.chatParameters || !this.chatParameters.search.indexNameValid || this.errorMessage) {
+        return;
       }
       const userMessage = this.userMessage
       this.userMessage = '';
@@ -68,6 +82,13 @@ export class ChatInterfaceComponent implements AfterViewChecked, OnInit, OnDestr
       this.scrollToBottom();
     }
     
+    // Adjusts textarea size upwards if needed
+    adjustTextareaHeight(event: Event) {
+      const textarea = event.target as HTMLTextAreaElement;
+      textarea.style.height = 'auto';
+      textarea.style.height = `${textarea.scrollHeight}px`;
+    }
+
     private scrollToBottom() {
       this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
     }

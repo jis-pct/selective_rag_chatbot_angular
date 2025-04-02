@@ -1,4 +1,71 @@
+/* Parent container for the chat interface */
+.chat-interface {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Full height of the viewport */
+  position: relative;
+}
+
+/* Title styling */
+.title {
+  height: 50px; /* Fixed height for the title */
+  margin: 0;
+  text-align: center;
+  border-bottom: 1px solid #ccc;
+  box-sizing: border-box; /* Ensure padding is included in the height */
+}
+
+/* Chat container for messages */
 .chat-container {
-    height: 85%;
-    overflow-y: auto;
-  }
+  flex: 1; /* Take up the remaining space between the title and input box */
+  overflow-y: auto; /* Enable scrolling for overflowing messages */
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  box-sizing: border-box; /* Ensure padding is included in the height */
+}
+
+/* Input container at the bottom */
+.input-container {
+  display: flex;
+  justify-content: center; /* Center the input box horizontally */
+  align-items: flex-end; /* Align the input box to the bottom */
+  padding: 10px;
+  margin-bottom: 20px;
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box; /* Ensure padding is included in the height */
+}
+
+/* Textarea styling */
+.input-container textarea {
+  width: 80%;
+  max-width: 800px;
+  min-height: 40px;
+  padding: 10px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  resize: none;
+  overflow: hidden;
+  box-sizing: border-box;
+  transition: height 0.2s ease;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Button styling */
+.input-container button {
+  margin-left: 10px;
+  padding: 10px 20px;
+  margin-bottom: 5px;
+  font-size: 15px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.input-container button:hover {
+  background-color: #afafaf;
+}
