@@ -8,9 +8,9 @@ export class SharedService {
   private defaultChatParameters = {
     model:{
       systemMessage: "You are an AI assistant that helps users find information. \
-  Please answer using retrieved documents only \
-  and without using your own knowledge. Generate citations to retrieved documents for \
-  every claim in your response. Do not answer using your own knowledge.",
+Please answer using retrieved documents only \
+and without using your own knowledge. Generate citations to retrieved documents for \
+every claim in your response. Do not answer using your own knowledge.",
       pastMessagesIncluded: 10,
       maxResponse: 800,
       temperature: 1,
