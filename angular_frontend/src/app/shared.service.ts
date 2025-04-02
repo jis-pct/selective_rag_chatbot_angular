@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-
+import { Message } from './models/message.model';
 @Injectable({
   providedIn: 'root'
 })
 export class SharedService {
+  // Chat parameters
   private defaultChatParameters = {
     model:{
       systemMessage: "You are an AI assistant that helps users find information. \
@@ -27,8 +28,12 @@ every claim in your response. Do not answer using your own knowledge.",
       topNDocuments: 5
     }
   }
-  
   private chatParametersSubject = new BehaviorSubject<any>(JSON.parse(JSON.stringify(this.defaultChatParameters)));
+
+  // Chat interface variables saved here to save state on page change
+  userMessage = "";
+  messages: Message[] = [];
+  errorMessage = '';
 
   // Observable for components to subscribe to
   chatParameters$ = this.chatParametersSubject.asObservable();

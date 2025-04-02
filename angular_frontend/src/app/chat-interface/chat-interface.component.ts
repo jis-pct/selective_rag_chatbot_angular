@@ -1,16 +1,11 @@
-import { Component, AfterViewChecked, ElementRef, ViewChild  } from '@angular/core';
+import { Component, AfterViewChecked, ElementRef, ViewChild, OnInit, OnDestroy  } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { NgFor } from '@angular/common';
 import { MarkdownModule } from 'ngx-markdown'
 import { SharedService } from '../shared.service';
-
-export interface Message {
-  role: 'user' | 'assistant' | 'system';
-  content: string;
-  displayableContent: string;
-}
+import { Message } from '../models/message.model';
 
 @Component({
     selector: 'app-chat-interface',
@@ -19,7 +14,7 @@ export interface Message {
     styleUrl: './chat-interface.component.css',
     standalone: true
 })
-export class ChatInterfaceComponent implements AfterViewChecked {
+export class ChatInterfaceComponent implements AfterViewChecked, OnInit, OnDestroy {
     private apiUrl = 'http://127.0.0.1:5000/chat';
     userMessage = "";
     messages: Message[] = []; // Store all message history
@@ -29,11 +24,18 @@ export class ChatInterfaceComponent implements AfterViewChecked {
 
     @ViewChild('chatContainer') private chatContainer!: ElementRef;
 
-    constructor(private http: HttpClient, private sharedService: SharedService) {
+    constructor(private http: HttpClient, private sharedService: SharedService) {}
+    
+    ngOnInit() {
+      // Restore state from the shared service
+      this.messages = this.sharedService.messages;
+      this.userMessage = this.sharedService.userMessage;
+      this.errorMessage = this.sharedService.errorMessage;
+  
       // Subscribe to chat parameters
-      this.sharedService.chatParameters$.subscribe(params => {
-      this.chatParameters = params;
-    });
+      this.sharedService.chatParameters$.subscribe((params) => {
+        this.chatParameters = params;
+      });
     }
 
     sendMessage() {
@@ -73,5 +75,12 @@ export class ChatInterfaceComponent implements AfterViewChecked {
     clearChat() {
       this.messages =[];
       this.errorMessage = '';
+    }
+
+    ngOnDestroy() {
+      // Save state to the shared service
+      this.sharedService.messages = this.messages;
+      this.sharedService.userMessage = this.userMessage;
+      this.sharedService.errorMessage = this.errorMessage;
     }
 }
