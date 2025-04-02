@@ -14,31 +14,15 @@ import { SharedService } from '../../shared.service';
 })
 export class ChatSidebarComponent implements OnInit, OnDestroy {
   public indexNameSubject = new Subject<string>();
-  public chatParameters = {
-    model: {
-      systemMessage: '',
-      pastMessagesIncluded: 0,
-      maxResponse: 0,
-      temperature: 0,
-      topP: 0,
-      stopPhrase: '',
-      frequencyPenalty: 0,
-      presencePenalty: 0,
-    },
-    search: {
-      indexName: '',
-      indexNameValid: false,
-      limitScope: false,
-      strictness: 0,
-      topNDocuments: 0,
-    },
-  };
+  public chatParameters: any;
 
   constructor(private http: HttpClient, private sharedService: SharedService) {}
 
   ngOnInit() {
-     // Get default params
-    this.chatParameters = this.sharedService.retrieveChatParameters()
+     // Subscribe to chat parameters
+    this.sharedService.chatParameters$.subscribe(params => {
+      this.chatParameters = params;
+    });
 
     // Subscribe to the Subject and debounce the validation requests
     this.indexNameSubject

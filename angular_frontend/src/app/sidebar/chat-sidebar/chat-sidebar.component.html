@@ -8,46 +8,46 @@
 <!-- MODEL PARAMETERS -->
 <h3>Model Parameters</h3>
 <label for="system-message">System message:</label>
-<textarea id="system-message" type="text" style="width:90%" rows="4" [(ngModel)]="chatParameters.model.systemMessage"></textarea><br>
+<textarea id="system-message" type="text" style="width:90%" rows="4" [(ngModel)]="chatParameters.model.systemMessage" ></textarea><br>
 
 <label for="past-messages">Past messages to include:</label>
-<input type="range" id="past-messages" min="1" max="20" step="1" [(ngModel)]="chatParameters.model.pastMessagesIncluded">
+<input type="range" id="past-messages" min="1" max="20" step="1" [(ngModel)]="chatParameters.model.pastMessagesIncluded" >
 <span>{{ chatParameters.model.pastMessagesIncluded }}</span><br>
 
 <label for="max-response">Maximum response tokens:</label>
-<input type="range" id="max-response" min="1" max="16000" step="1" [(ngModel)]="chatParameters.model.maxResponse">
+<input type="range" id="max-response" min="1" max="16000" step="1" [(ngModel)]="chatParameters.model.maxResponse" >
 <span>{{ chatParameters.model.maxResponse }}</span><br>
 
 <label for="temperature">Temperature:</label>
-<input type="range" id="temperature" min="0.0" max="2.0" step="0.1" [(ngModel)]="chatParameters.model.temperature">
-<span>{{ chatParameters.model.maxResponse }}</span><br>
+<input type="range" id="temperature" min="0.0" max="2.0" step="0.1" [(ngModel)]="chatParameters.model.temperature" >
+<span>{{ chatParameters.model.temperature }}</span><br>
 
 <label for="top-p">Top P:</label>
-<input type="range" id="top-p" min="0.0" max="1.0" step="0.1" [(ngModel)]="chatParameters.model.topP">
+<input type="range" id="top-p" min="0.0" max="1.0" step="0.1" [(ngModel)]="chatParameters.model.topP" >
 <span>{{ chatParameters.model.topP }}</span><br>
 
 <label for="stop-phrase">Stop phrase:</label>
-<input type="text" id="stop-phrase" [(ngModel)]="chatParameters.model.stopPhrase" /><br>
+<input type="text" id="stop-phrase" [(ngModel)]="chatParameters.model.stopPhrase"  /><br>
 
 <label for="frequency-penalty">Frequency Penalty</label>
-<input type="range" id="frequency-penalty" min="-2.0" max="2.0" step="0.1" [(ngModel)]="chatParameters.model.frequencyPenalty">
+<input type="range" id="frequency-penalty" min="-2.0" max="2.0" step="0.1" [(ngModel)]="chatParameters.model.frequencyPenalty" >
 <span>{{ chatParameters.model.frequencyPenalty }}</span><br>
 
 <label for="presence-penalty">Presence Penalty:</label>
-<input type="range" id="presence-penalty" min="-2.0" max="2.0" step="0.1" [(ngModel)]="chatParameters.model.presencePenalty">
+<input type="range" id="presence-penalty" min="-2.0" max="2.0" step="0.1" [(ngModel)]="chatParameters.model.presencePenalty" >
 <span>{{ chatParameters.model.presencePenalty }}</span><br>
 
 <!-- SEARCH PARAMETERS -->
 <br><h3>Search Parameters</h3>
 <label for="scope">Limit responses to data content:</label>
-<input type="checkbox" id="scope" [(ngModel)]="chatParameters.search.limitScope"/><br>
+<input type="checkbox" id="scope" [(ngModel)]="chatParameters.search.limitScope" /><br>
 
 <label for="past-messages">Strictness:</label>
-<input type="range" min="1" max="5" step="1" [(ngModel)]="chatParameters.search.strictness">
+<input type="range" min="1" max="5" step="1" [(ngModel)]="chatParameters.search.strictness" >
 <span>{{ chatParameters.search.strictness }}</span><br>
 
 <label for="past-messages">Number of retrieved documents:</label>
-<input type="range" min="3" max="20" step="1" [(ngModel)]="chatParameters.search.topNDocuments">
+<input type="range" min="3" max="20" step="1" [(ngModel)]="chatParameters.search.topNDocuments" >
 <span>{{ chatParameters.search.topNDocuments }}</span><br>
 </div>
 

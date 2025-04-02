@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SharedService {
-  defaultChatParameters = {
+  private defaultChatParameters = {
     model:{
       systemMessage: "You are an AI assistant that helps users find information. \
   Please answer using retrieved documents only \
@@ -28,14 +28,23 @@ export class SharedService {
     }
   }
   
-  currentChatParameters = JSON.parse(JSON.stringify(this.defaultChatParameters));
+  private chatParametersSubject = new BehaviorSubject<any>(JSON.parse(JSON.stringify(this.defaultChatParameters)));
 
-  retrieveChatParameters() {
-    return this.currentChatParameters
+  // Observable for components to subscribe to
+  chatParameters$ = this.chatParametersSubject.asObservable();
+
+  // Method to retrieve the current chat parameters
+  getChatParameters() {
+    return this.chatParametersSubject.value;
   }
 
+  // Method to update the chat parameters
+  updateChatParameters(newParameters: any) {
+    this.chatParametersSubject.next(newParameters);
+  }
+
+  // Method to reset chat parameters to default
   resetChatParameters() {
-    Object.assign(this.currentChatParameters, this.defaultChatParameters);
+    this.chatParametersSubject.next(JSON.parse(JSON.stringify(this.defaultChatParameters)));
   }
-  
 }
