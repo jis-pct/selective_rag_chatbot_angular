@@ -1,13 +1,9 @@
 <div class="sidebar-container">
   <!-- Navigation -->
-  <div>
-    <button routerLink="/">Chat Interface</button>
-    <button routerLink="/storage-manager">Storage Manager</button>
+  <div class="nav-container">
+    <button routerLink="/"  routerLinkActive="active-button" [routerLinkActiveOptions]="{ exact: true }">Chat</button>
+    <button routerLink="/storage-manager" routerLinkActive="active-button">Storage Manager</button>
   </div>
-
-  <!-- Titles for page -->
-  <h1 *ngIf="currentRoute === '/'">RAG Chatbot</h1>
-  <h1 *ngIf="currentRoute === '/storage-manager'">Storage Manager</h1>
 
   <!-- Chat interface sidebar -->
   <div *ngIf="currentRoute === '/'">

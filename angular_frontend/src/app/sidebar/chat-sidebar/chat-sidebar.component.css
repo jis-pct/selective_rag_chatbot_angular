@@ -1,5 +1,85 @@
-/* Apply vertical padding to all elements except <h3> */
-div > *:not(h3) {
-    margin-top: 10px; /* Add vertical spacing above each element */
-    margin-bottom: 10px; /* Add vertical spacing below each element */
+label {
+    display: block;
+    margin-top: 20px;
+    margin-bottom: 2px;
+    font-size: 14px;
+}
+
+.error-message {
+    position: absolute;
+    color: red;
+    margin: 2px 0px 0px 2px;
+    font-size: small;
+}
+
+.slider-container {
+    display: flex; /* Use flexbox for layout */
+    align-items: center; /* Align slider and input vertically */
+    gap: 10px; /* Add spacing between the slider and the input box */
+    width: 100%; /* Ensure the container spans the full width */
+}
+
+.slider-container input[type="range"] {
+    flex: 1; /* Allow the slider to take up all available space */
+    margin: 0; /* Remove unnecessary margins */
+}
+
+.slider-container input[type="number"] {
+    width: 70px; /* Set a fixed width for the input box */
+    padding: 5px; /* Add padding for better spacing */
+    font-size: 14px; /* Set font size */
+    border: 1px solid #ccc; /* Add a border */
+    border-radius: 4px; /* Add rounded corners */
+    box-sizing: border-box; /* Include padding and border in the width calculation */
+    text-align: left; /* Center the text inside the input box */
+    margin-right: 10px;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-right: 60px;
+}
+
+.checkbox-container input {
+    width: 20px;
+    height: 20px;
+    margin-top: 20px;
+    margin-right: 0;
+    margin-bottom: 2px;
+}
+
+.text-container input,
+.text-container textarea {
+    width: calc(100% - 10px);
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    resize: vertical;
+    scrollbar-gutter: stable;
+}
+
+.top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0;
+    margin: 0;
+    margin-top: 20px;
+}
+
+.top h1 {
+    font-size: 20px;
+    margin: 0;
+}
+
+.reset-button {
+    font-size: 12px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    margin-right: 10px;
 }

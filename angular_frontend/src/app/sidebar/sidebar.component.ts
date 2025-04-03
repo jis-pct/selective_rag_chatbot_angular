@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { ChatSidebarComponent } from './chat-sidebar/chat-sidebar.component';
 import { StorageSidebarComponent } from './storage-sidebar/storage-sidebar.component';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [ChatSidebarComponent, StorageSidebarComponent, CommonModule, RouterLink],
+  imports: [ChatSidebarComponent, StorageSidebarComponent, CommonModule, RouterLink, RouterLinkActive],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css'
 })

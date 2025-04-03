@@ -41,10 +41,8 @@ export class ChatInterfaceComponent implements AfterViewChecked, OnInit, OnDestr
     handleKeyDown(event: KeyboardEvent): void {
       if (event.key === 'Enter' && !event.shiftKey) {
         if (this.userMessage.trim() === '') {
-          // Prevent default behavior (adding a newline) if the message is empty
           event.preventDefault();
         } else {
-          // Prevent default behavior and send the message
           event.preventDefault();
           this.sendMessage();
         }
@@ -53,7 +51,7 @@ export class ChatInterfaceComponent implements AfterViewChecked, OnInit, OnDestr
 
     sendMessage() {
       // Prevent sending messages on certain conditions
-      if (this.isWaitingForResponse || !this.chatParameters || !this.chatParameters.search.indexNameValid || this.errorMessage) {
+      if ( this.userMessage.trim() === '' || this.isWaitingForResponse || !this.chatParameters || !this.chatParameters.search.indexNameValid || this.errorMessage) {
         return;
       }
       const userMessage = this.userMessage
